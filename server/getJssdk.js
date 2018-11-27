@@ -23,12 +23,11 @@ module.exports = {
     } else {
       noncestr = getNoncestr();                          // 获取 access_token
       request(`${wechatConfig.accessTokenUrl}?grant_type=${wechatConfig.grant_type}&appid=${wechatConfig.appid}&secret=${wechatConfig.secret}`,
-        function (err,response,body) {  
+        (err,response,body) => {  
           if (!err && response.statusCode == 200) {
-            let tokenMap = JSON.parse(body);
-            console.log(tokenMap);                      // 获取 ticket
+            let tokenMap = JSON.parse(body);            // 获取 ticket
             request(`${wechatConfig.ticketUrl}?access_token=${tokenMap.access_token}&type=jsapi`,
-              function (err,res,json) {  
+              (err,res,json) => {  
                 if (!err && res.statusCode == 200) {
                   let ticketMap = JSON.parse(json);
                   cache.put('ticket',ticketMap.ticket,wechatConfig.cache_duration); // ticket加入cache
